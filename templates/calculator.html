@@ -1,0 +1,33 @@
+<!-- calculator.html -->
+{% extends 'base.html' %}
+
+{% block title %}Macronutrient Calculator{% endblock %}
+
+{% block content %}
+<section class="mb-5">
+    <h2>Calculate Macronutrient Costs</h2>
+    <button class="btn btn-info" onclick="calculateCosts()">
+        <i class="fas fa-calculator"></i> Calculate Costs
+    </button>
+    <div id="calculated-costs" class="mt-3"></div>
+</section>
+
+<section>
+    <h2>Find Cheapest Macronutrient Source</h2>
+    <div class="row g-3">
+        <div class="col-md-6">
+            <select id="macronutrient-select" class="form-select">
+                <option value="protein">Protein</option>
+                <option value="fat">Fat</option>
+                <option value="carbs">Carbs</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <button class="btn btn-warning" onclick="findCheapest()">
+                <i class="fas fa-search"></i> Find Cheapest
+            </button>
+        </div>
+    </div>
+    <div id="cheapest-macronutrient" class="mt-3"></div>
+</section>
+{% endblock %}

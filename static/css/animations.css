@@ -1,0 +1,30 @@
+.animate {
+    opacity: 0;
+    translate: 0 0.75rem;
+    transition: 700ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.animate.show {
+    opacity: 1;
+    translate: 0 0;
+}
+
+
+.logout-button {
+    display: none;
+    /*position: absolute;*/
+    /*top: 50%;*/
+    /*right: 0;*/
+    /*transform: translateY(-50%);*/
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    /*border-radius: 4px;*/
+    /*padding: 5px 10px;*/
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.logout-button:hover {
+    display: block;
+}
