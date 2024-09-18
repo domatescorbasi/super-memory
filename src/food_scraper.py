@@ -1,6 +1,6 @@
 import re
 import requests
-from models import FoodItem
+from src.models import FoodItem
 
 
 class FoodItemScraper:

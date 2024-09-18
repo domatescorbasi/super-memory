@@ -1,12 +1,12 @@
 from flask import Flask, render_template, redirect, url_for, request, flash, jsonify
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from food_calculator import FoodCalculator
-from food_scraper import FoodItemScraper
-from models import db, FoodItem, User
+from src.food_calculator import FoodCalculator
+from src.food_scraper import FoodItemScraper
+from src.models import db, FoodItem, User
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['SECRET_KEY'] = '2673457263tr23grehjfsdhjffhsjd723t82g73gc7uwegfsd$##%@*(@Hjbdjsbfˆ&&ˆˆ$ˆ#jvhds'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///food_calculator.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -14,7 +14,7 @@ bcrypt = Bcrypt(app)
 calculator = FoodCalculator(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
-
+IS_DEBUG = False
 
 # ----------- HELPER FUNCTIONS ------------ #
 
@@ -276,4 +276,4 @@ def scrape_food():
 # ----------- RUN THE APPLICATION ------------ #
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=IS_DEBUG)

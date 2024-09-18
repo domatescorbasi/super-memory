@@ -1,4 +1,4 @@
-from models import db, FoodItem
+from src.models import db, FoodItem
 from flask_login import current_user
 
 class FoodCalculator:
