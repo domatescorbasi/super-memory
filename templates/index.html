@@ -51,7 +51,7 @@
             <input type="number" id="fat" class="form-control" step="0.01" placeholder="Fat (g)" required>
         </div>
         <div class="col-md-6">
-            <input type="number" id="carbs" class="form-control" step="0.01" placeholder="Carbs (g)" required>
+            <input type="number" id="carb" class="form-control" step="0.01" placeholder="Carb (g)" required>
         </div>
         <div class="col-md-6">
             <input type="number" id="price_per_unit" class="form-control" step="0.01" placeholder="Price per Unit (for the amount you entered, whats the price)" required>
@@ -128,7 +128,7 @@
                     document.getElementById('name').value = data.food_item.name;
                     document.getElementById('protein').value = data.food_item.protein;
                     document.getElementById('fat').value = data.food_item.fat;
-                    document.getElementById('carbs').value = data.food_item.carbs;
+                    document.getElementById('carb').value = data.food_item.carb;
                     document.getElementById('unit_weight').value = data.food_item.unit_weight;
                     showToast('Food data fetched successfully.');
                 } else {

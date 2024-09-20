@@ -1,7 +1,40 @@
 document.addEventListener('DOMContentLoaded', function () {
     fetchFoodItems();
     setupFormSubmitHandler();
+
+     // Set up button click handlers for calculator functionality
+
 });
+
+function calculateTotalCost() {
+    fetch('/api/calculate-total-cost')
+        .then(response => response.json())
+        .then(data => {
+            let totalCostDiv = document.getElementById('total-cost');
+            totalCostDiv.innerHTML = ''; // Clear previous content
+
+            // Display the total cost
+            totalCostDiv.innerHTML = `<div class="alert alert-info mt-3">
+                <strong>Total Cost:</strong> $${data.total_cost.toFixed(2)}
+            </div>`;
+
+            let detailsDiv = document.getElementById('cost-details');
+            detailsDiv.innerHTML = '<h5>Cost Breakdown:</h5>';
+
+            // Iterate over the details object and display the breakdown
+            Object.keys(data.details).forEach(macronutrient => {
+                const item = data.details[macronutrient]; // Access each macronutrient's details
+                const gramsNeeded = item.grams_needed; // Grams of the macronutrient needed
+
+                detailsDiv.innerHTML += `<div><strong>${macronutrient}:</strong> ${item.food} - 
+                    ${item.total_weight.toFixed(2)}g (to meet ${gramsNeeded}g), $${item.cost.toFixed(2)}</div>`;
+            });
+        })
+        .catch(error => showToast(error + ' Error calculating total cost', 'danger'));
+}
+
+
+
 function fetchFoodItems() {
     fetch('/api/food-items')
         .then(response => response.json())
@@ -41,9 +74,9 @@ function fetchFoodItems() {
                             <li class="list-group-item flex-fill ${textClass}" 
                                 data-bs-toggle="tooltip" 
                                 data-bs-placement="top" 
-                                title="Carbs: ${item.carbs}g">
+                                title="Carb: ${item.carb}g">
                                 <i class="${iconClass} fa-bolt" style="color: #F4A460;"></i>
-                                <span class="d-none d-sm-inline"> Carbs: ${item.carbs}g</span>
+                                <span class="d-none d-sm-inline"> Carb: ${item.carb}g</span>
                             </li>
                             <li class="list-group-item flex-fill ${textClass}" 
                                 data-bs-toggle="tooltip" 
@@ -119,7 +152,7 @@ function handleFormSubmit(event) {
         name: document.getElementById('name').value,
         protein: parseFloat(document.getElementById('protein').value),
         fat: parseFloat(document.getElementById('fat').value),
-        carbs: parseFloat(document.getElementById('carbs').value),
+        carb: parseFloat(document.getElementById('carb').value),
         price_per_unit: parseFloat(document.getElementById('price_per_unit').value),
         unit_weight: parseFloat(document.getElementById('unit_weight').value)
     };
@@ -167,7 +200,7 @@ function editFoodItem(itemId) {
             document.getElementById('name').value = item.name;
             document.getElementById('protein').value = item.protein;
             document.getElementById('fat').value = item.fat;
-            document.getElementById('carbs').value = item.carbs;
+            document.getElementById('carb').value = item.carb;
             document.getElementById('price_per_unit').value = item.price_per_unit;
             document.getElementById('unit_weight').value = item.unit_weight;
 
@@ -182,7 +215,7 @@ function resetForm() {
     document.getElementById('name').value = '';
     document.getElementById('protein').value = '';
     document.getElementById('fat').value = '';
-    document.getElementById('carbs').value = '';
+    document.getElementById('carb').value = '';
     document.getElementById('price_per_unit').value = '';
     document.getElementById('unit_weight').value = '';
 
@@ -221,7 +254,7 @@ function calculateCosts() {
                     <strong>${item.name}</strong>: 
                     Protein cost: ${item.protein_cost}, 
                     Fat cost: ${item.fat_cost}, 
-                    Carbs cost: ${item.carbs_cost}
+                    Carb cost: ${item.carb_cost}
                 </div>`;
             });
         })
@@ -259,7 +292,7 @@ function copyToAddForm(itemId) {
             document.getElementById('name').value = item.name;
             document.getElementById('protein').value = item.protein;
             document.getElementById('fat').value = item.fat;
-            document.getElementById('carbs').value = item.carbs;
+            document.getElementById('carb').value = item.carb;
             document.getElementById('price_per_unit').value = item.price_per_unit;
             document.getElementById('unit_weight').value = item.unit_weight;
 

@@ -14,7 +14,7 @@ bcrypt = Bcrypt(app)
 calculator = FoodCalculator(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
-IS_DEBUG = False
+IS_DEBUG = True
 
 # ----------- HELPER FUNCTIONS ------------ #
 
@@ -99,13 +99,27 @@ def update_theme():
 @login_required
 def profile_page():
     if request.method == 'POST':
+        # Existing fields
         new_username = request.form.get('username')
         new_password = request.form.get('password')
+
+        # New fields
+        daily_calories = float(request.form.get('daily_calories'))
+        protein_percentage = float(request.form.get('protein_percentage'))
+        fat_percentage = float(request.form.get('fat_percentage'))
+        carb_percentage = float(request.form.get('carb_percentage'))
+        priority_order = request.form.get('priority_order')
+
         if new_username:
             current_user.update_username(new_username)
         if new_password:
             current_user.update_password(new_password)
+
+        # Update the macros and priority order
+        current_user.update_profile_macros(daily_calories, protein_percentage, fat_percentage, carb_percentage,
+                                           priority_order)
         db.session.commit()
+
         flash('Profile updated successfully', 'success')
         return redirect(url_for('profile_page'))
 
@@ -166,7 +180,7 @@ def add_food_item():
         name=data['name'],
         protein=data['protein'],
         fat=data['fat'],
-        carbs=data['carbs'],
+        carb=data['carb'],
         price_per_unit=data['price_per_unit'],
         unit_weight=data['unit_weight'],
         user_id=current_user.id
@@ -185,7 +199,7 @@ def edit_food_item(item_id):
         food_item.name = data['name']
         food_item.protein = data['protein']
         food_item.fat = data['fat']
-        food_item.carbs = data['carbs']
+        food_item.carb = data['carb']
         food_item.price_per_unit = data['price_per_unit']
         food_item.unit_weight = data['unit_weight']
         db.session.commit()
@@ -212,6 +226,12 @@ def get_food_item(item_id):
         return jsonify(food_item.to_dict())
     return jsonify({'message': 'Food item not found'}), 404
 
+@app.route('/api/calculate-total-cost', methods=['GET'])
+@login_required
+def calculate_total_cost():
+    total_cost_data = calculator.calculate_total_cost()
+    return jsonify(total_cost_data)
+
 
 # ----------- FOOD CALCULATOR LOGIC ------------ #
 
@@ -226,8 +246,8 @@ def calculate_costs():
 @login_required
 def find_cheapest_macronutrient():
     macronutrient = request.args.get('macronutrient')
-    item_name, cost = calculator.find_cheapest_macronutrient(macronutrient)
-    return jsonify({"cheapest_item": item_name, "cost_per_gram": cost})
+    item, cost = calculator.find_cheapest_macronutrient(macronutrient)
+    return jsonify({"cheapest_item": item.name, "cost_per_gram": cost})
 
 
 # ---------- Scraper ---------------- #
@@ -265,7 +285,7 @@ def scrape_food():
                     'name': food_item.name,
                     'protein': food_item.protein,
                     'fat': food_item.fat,
-                    'carbs': food_item.carbs,
+                    'carb': food_item.carb,
                     'unit_weight': food_item.unit_weight
                 }
             })

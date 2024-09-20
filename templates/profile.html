@@ -16,8 +16,8 @@
             {% endif %}
         {% endwith %}
 
-        <form method="POST" action="{{ url_for('profile_page') }}">
-            <div class="mb-3">
+      <form method="POST" action="{{ url_for('profile_page') }}">
+       <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username"
                        value="{{ current_user.username }}" required>
@@ -27,10 +27,38 @@
                 <input type="password" class="form-control" id="password" name="password">
                 <div class="form-text">Leave empty if you don't want to change your password.</div>
             </div>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
+    <div class="mb-3">
+        <label for="daily_calories" class="form-label">Daily Calorie Intake</label>
+        <input type="number" class="form-control" id="daily_calories" name="daily_calories" value="{{ current_user.daily_calories or '' }}" required>
+    </div>
 
+    <div class="mb-3">
+        <label for="protein_percentage" class="form-label">Protein %</label>
+        <input type="number" class="form-control" id="protein_percentage" name="protein_percentage" value="{{ current_user.protein_percentage or '' }}" required>
+    </div>
 
-        </form>
+    <div class="mb-3">
+        <label for="fat_percentage" class="form-label">Fat %</label>
+        <input type="number" class="form-control" id="fat_percentage" name="fat_percentage" value="{{ current_user.fat_percentage or '' }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="carb_percentage" class="form-label">Carbs %</label>
+        <input type="number" class="form-control" id="carb_percentage" name="carb_percentage" value="{{ current_user.carb_percentage or '' }}" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="priority_order" class="form-label">Macronutrient Priority</label>
+        <select class="form-control" id="priority_order" name="priority_order">
+            <option value="protein > fat > carb" {% if current_user.priority_order == "protein > fat > carb" %}selected{% endif %}>Protein > Fat > Carb</option>
+            <option value="fat > protein > carb" {% if current_user.priority_order == "fat > protein > carb" %}selected{% endif %}>Fat > Protein > Carb</option>
+            <option value="carb > protein > fat" {% if current_user.priority_order == "carb > protein > fat" %}selected{% endif %}>Carb > Protein > Fat</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
         <div class="d-flex flex-row-reverse bd-highlight mb-3">
             <button class="btn btn-danger ms-2" onclick="logout()">Logout</button>
         </div>

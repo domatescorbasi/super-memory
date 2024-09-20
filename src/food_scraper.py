@@ -63,7 +63,7 @@ class FoodItemScraper:
         description = data.get('description', 'Unknown food item')
         food_nutrients = data.get('foodNutrients', [])
 
-        water = protein = fat = carbs = 0
+        water = protein = fat = carb = 0
 
         for nutrient in food_nutrients:
             nutrient_info = nutrient.get('nutrient', {})
@@ -75,7 +75,7 @@ class FoodItemScraper:
             elif 'total lipid (fat)' in nutrient_name:
                 fat = nutrient.get('value', 0)
             elif 'carbohydrate, by difference' in nutrient_name:
-                carbs = nutrient.get('value', 0)
+                carb = nutrient.get('value', 0)
             elif 'water' == nutrient_name:
                 water = nutrient.get('value', 0)
 
@@ -83,9 +83,9 @@ class FoodItemScraper:
             name=description,
             protein=protein,
             fat=fat,
-            carbs=carbs,
+            carb=carb,
             price_per_unit=0,
-            unit_weight=round((water + fat + carbs + protein), 2)
+            unit_weight=round((water + fat + carb + protein), 2)
         )
 
     def scrape(self, item_id=None):
